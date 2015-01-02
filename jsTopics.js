@@ -6,7 +6,10 @@ var jsTopics = {};
     
     // A topic identifier
     var topicId = -1;
-    
+
+    /**
+     * @return {boolean}
+     */
     bus.Publish = function (topic, data) {
         if (!store[topic]) {
             return false;
@@ -22,6 +25,9 @@ var jsTopics = {};
         return this;    
     };
 
+    /**
+     * @return {string}
+     */
     bus.Subscribe = function (topic, func) {     
         if (!store[topic]) {    
             store[topic] = [];    
@@ -55,7 +61,10 @@ var jsTopics = {};
         
         return this;
     };
-    
+
+    /**
+     * @return {Array.<string>}
+     */
     bus.TopicList = function () {
         var topics = [];
         for (var topic in store) {
@@ -63,17 +72,23 @@ var jsTopics = {};
         }
         
         return topics;
-    }
-    
+    };
+
+    /**
+     * @return {int}
+     */
     bus.TopicCount = function () {
         var topics = bus.TopicList();
         return topics.length;
-    }
+    };
     
     bus.ClearSubscriptions = function () {
         topics = {};
-    }
-    
+    };
+
+    /**
+     * @return {int}
+     */
     bus.InvokedCount = function (token) {
         var count = 0;
         
