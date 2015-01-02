@@ -7,7 +7,7 @@ var jsTopics = {};
     // A topic identifier
     var topicId = -1;
     
-    bus.publish = function (topic, data) {
+    bus.Publish = function (topic, data) {
         if (!store[topic]) {
             return false;
         }
@@ -22,7 +22,7 @@ var jsTopics = {};
         return this;    
     };
 
-    bus.subscribe = function (topic, func) {     
+    bus.Subscribe = function (topic, func) {     
         if (!store[topic]) {    
             store[topic] = [];    
         }
@@ -40,10 +40,11 @@ var jsTopics = {};
     };
 
     // Unsubscribe from a topic based on a tokenized reference to the subscription.
-    bus.unsubscribe = function (token) {
+    bus.Unsubscribe = function (token) {
         for (var topic in store) {
             if (store[topic]) {
-                for (var index = 0, topicCount = store[topic].length; index < topicCount; index++) {
+                var topicCount = store[topic].length;
+                for (var index = 0; index < topicCount; index++) {
                     if (store[topic][index].token === token) {
                         store[topic].splice(index, 1);
                         return token;
@@ -55,7 +56,7 @@ var jsTopics = {};
         return this;
     };
     
-    bus.topicList = function () {
+    bus.TopicList = function () {
         var topics = [];
         for (var topic in store) {
             topics.push(topic);
@@ -64,16 +65,16 @@ var jsTopics = {};
         return topics;
     }
     
-    bus.topicCount = function () {
-        var topics = bus.topicList();
+    bus.TopicCount = function () {
+        var topics = bus.TopicList();
         return topics.length;
     }
     
-    bus.clearSubscriptions = function () {
+    bus.ClearSubscriptions = function () {
         topics = {};
     }
     
-    bus.invokedCount = function (token) {
+    bus.InvokedCount = function (token) {
         var count = 0;
         
         for (var topic in store) {

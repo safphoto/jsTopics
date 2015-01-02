@@ -16,11 +16,10 @@
         
         function pageLoaded() {
             var viewer = document.getElementById("viewer");
-            viewer.innerHTML = "Pub/Sub Testing . . ."
+            viewer.innerHTML = "jsTopic Examples . . ."
             
-            // Another simple message handler
-            // A simple message logger that logs any topics and data
-            // received through our subscriber        
+            // A callback function for a topic subscription. This one write out the
+            // message to a div. 
             var viewerLogger = function(topic, data){                
                 if (!initialViewer) {
                     var newLine = document.createElement("br");
@@ -34,54 +33,50 @@
                 } 
             };
             
-            // Another simple message handler
-            // A simple message logger that logs any topics and data
-            // received through our subscriber        
+            // Another callback function for a topic subscription. This one writes
+            // out the message to the javascript console.      
             var consoleLogger = function(topic, data){
                 Logger.LogToConsole("Logging: " + topic + ":" + JSON.stringify(data));        
             };
             
-            // Subscribers listen for topics they have subscribed to and        
-            // invoke a callback function (e.gmessageLogger) once a new        
-            // notification is broadcast on that topic        
-            var subscription1 = jsTopics.subscribe("inbox/newMessage", viewerLogger);
-            var subscription2 = jsTopics.subscribe("inbox/newMessage", consoleLogger);
-            var subscription3 = jsTopics.subscribe("inbox/authorMessage", viewerLogger);
-            var subscription4 = jsTopics.subscribe("inbox/authorMessage", consoleLogger);
-            Logger.LogToConsole("Topic List: " + JSON.stringify(jsTopics.topicList()) + "; Count: " + jsTopics.topicCount());
+            // Subscribe to topics and pass a callback function       
+            var subscription1 = jsTopics.Subscribe("topic1", viewerLogger);
+            var subscription2 = jsTopics.Subscribe("topic1", consoleLogger);
+            var subscription3 = jsTopics.Subscribe("topic2", viewerLogger);
+            var subscription4 = jsTopics.Subscribe("topic2", consoleLogger);
+            Logger.LogToConsole("Topic List: " + JSON.stringify(jsTopics.TopicList()) + "; Count: " + jsTopics.TopicCount());
             
-            // Publishers are in charge of publishing topics or notifications of        
-            // interest to the application. e.g:        
-            jsTopics.publish("inbox/newMessage", "hello world!");
+            // Publish message to all applicable subscribers
             
-            //or        
-            jsTopics.publish("inbox/newMessage", ["test", "a", "b", "c"]);
-            
-            //or        
-            jsTopics.publish("inbox/newMessage",{        
-                sender: "hello@google.com",        
-                body: "Hey again!"        
+            jsTopics.Publish("topic1", {
+                Published: new Date(),
+                Comment: "This is my first published message for 'Topic1'"
+            });
+                 
+            jsTopics.Publish("topic1",{        
+                Published: new Date(),        
+                Comment: "This is my second published message for 'Topic1'."        
+            });
+                  
+            jsTopics.Publish("topic2",{        
+                Published: new Date(),        
+                Comment: "This is my first published message for 'Topic2'"       
             });
             
-            //or        
-            jsTopics.publish("inbox/authorMessage",{        
-                FirstName: "Scott",        
-                LastName: "Flaherty!"        
+            // Cancel the subscription for subscription1      
+            jsTopics.Unsubscribe(subscription1);
+            
+            // Since we have unsubscribed 'subscription1', this message will only go to
+            // the console and not to the 'viewer' div.
+            jsTopics.Publish("topic1", {
+                Published: new Date(),
+                Comment: "This should only appear in the console for 'Topic1'"
             });
-            
-            // We can also unsubscribe if we no longer wish for our subscribers        
-            // to be notified        
-            jsTopics.unsubscribe(subscription1);
-            
-            // Once unsubscribed, this for example won't result in our        
-            // message Logger being executed as the subscriber is no longer listening        
-            jsTopics.publish("inbox/newMessage", "Hello! are you still there?");
-            
             
             
             var newLine = document.createElement("br");
             viewer.appendChild(newLine);
-            var newMessage = document.createTextNode("Subscription invocations for 'subscription3': " + jsTopics.invokedCount(subscription3));
+            var newMessage = document.createTextNode("Subscription invocations for 'subscription3': " + jsTopics.InvokedCount(subscription3));
             viewer.appendChild(newMessage);
         }
     </script>
