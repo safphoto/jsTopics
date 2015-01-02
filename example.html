@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd"
+    >
+<html lang="en">
+<head>
+    <title><!-- Insert your title here --></title>
+    <script type="text/javascript" src="./jsTopics.js"></script>
+    <script type="application/x-javascript">
+        var initialViewer = true;
+        
+        var Logger = {};
+            Logger.LogToConsole = function (message) {
+                if (window.console && window.console.log)
+                    window.console.log(message);
+            };  
+        
+        function pageLoaded() {
+            var viewer = document.getElementById("viewer");
+            viewer.innerHTML = "Pub/Sub Testing . . ."
+            
+            // Another simple message handler
+            // A simple message logger that logs any topics and data
+            // received through our subscriber        
+            var viewerLogger = function(topic, data){                
+                if (!initialViewer) {
+                    var newLine = document.createElement("br");
+                    viewer.appendChild(newLine);
+                    var newMessage = document.createTextNode("Logging: " + topic + ":" + JSON.stringify(data));
+                    viewer.appendChild(newMessage);
+                }
+                else {
+                    viewer.innerHTML = "Logging: " + topic + ":" + JSON.stringify(data);                    
+                    initialViewer = false;
+                } 
+            };
+            
+            // Another simple message handler
+            // A simple message logger that logs any topics and data
+            // received through our subscriber        
+            var consoleLogger = function(topic, data){
+                Logger.LogToConsole("Logging: " + topic + ":" + JSON.stringify(data));        
+            };
+            
+            // Subscribers listen for topics they have subscribed to and        
+            // invoke a callback function (e.gmessageLogger) once a new        
+            // notification is broadcast on that topic        
+            var subscription1 = jsTopics.subscribe("inbox/newMessage", viewerLogger);
+            var subscription2 = jsTopics.subscribe("inbox/newMessage", consoleLogger);
+            var subscription3 = jsTopics.subscribe("inbox/authorMessage", viewerLogger);
+            var subscription4 = jsTopics.subscribe("inbox/authorMessage", consoleLogger);
+            Logger.LogToConsole("Topic List: " + JSON.stringify(jsTopics.topicList()) + "; Count: " + jsTopics.topicCount());
+            
+            // Publishers are in charge of publishing topics or notifications of        
+            // interest to the application. e.g:        
+            jsTopics.publish("inbox/newMessage", "hello world!");
+            
+            //or        
+            jsTopics.publish("inbox/newMessage", ["test", "a", "b", "c"]);
+            
+            //or        
+            jsTopics.publish("inbox/newMessage",{        
+                sender: "hello@google.com",        
+                body: "Hey again!"        
+            });
+            
+            //or        
+            jsTopics.publish("inbox/authorMessage",{        
+                FirstName: "Scott",        
+                LastName: "Flaherty!"        
+            });
+            
+            // We can also unsubscribe if we no longer wish for our subscribers        
+            // to be notified        
+            jsTopics.unsubscribe(subscription1);
+            
+            // Once unsubscribed, this for example won't result in our        
+            // message Logger being executed as the subscriber is no longer listening        
+            jsTopics.publish("inbox/newMessage", "Hello! are you still there?");
+            
+            
+            
+            var newLine = document.createElement("br");
+            viewer.appendChild(newLine);
+            var newMessage = document.createTextNode("Subscription invocations for 'subscription3': " + jsTopics.invokedCount(subscription3));
+            viewer.appendChild(newMessage);
+        }
+    </script>
+</head>
+<body onload="pageLoaded()">
+    <div id="viewer">
+        Testing . . .
+    </div>
+</body>
+</html>
