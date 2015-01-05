@@ -1,4 +1,7 @@
-var jsTopics = {};
+// Safely create namespace
+var SAF = SAF || {};
+
+SAF.JsTopics = {};
 
 (function(bus) {
     // subscriptions store
@@ -105,4 +108,4 @@ var jsTopics = {};
         return count;
     }
 
-}(jsTopics));
+}(SAF.JsTopics));
