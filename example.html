@@ -39,35 +39,35 @@
             };
             
             // Subscribe to topics and pass a callback function       
-            var subscription1 = jsTopics.Subscribe("topic1", viewerLogger);
-            var subscription2 = jsTopics.Subscribe("topic1", consoleLogger);
-            var subscription3 = jsTopics.Subscribe("topic2", viewerLogger);
-            var subscription4 = jsTopics.Subscribe("topic2", consoleLogger);
-            Logger.LogToConsole("Topic List: " + JSON.stringify(jsTopics.TopicList()) + "; Count: " + jsTopics.TopicCount());
+            var subscription1 = jsTopics.subscribe("topic1", viewerLogger);
+            var subscription2 = jsTopics.subscribe("topic1", consoleLogger);
+            var subscription3 = jsTopics.subscribe("topic2", viewerLogger);
+            var subscription4 = jsTopics.subscribe("topic2", consoleLogger);
+            Logger.LogToConsole("Topic List: " + JSON.stringify(jsTopics.topicList()) + "; Count: " + jsTopics.topicCount());
             
             // Publish message to all applicable subscribers
             
-            jsTopics.Publish("topic1", {
+            jsTopics.publish("topic1", {
                 Published: new Date(),
                 Comment: "This is my first published message for 'Topic1'"
             });
                  
-            jsTopics.Publish("topic1",{        
+            jsTopics.publish("topic1",{
                 Published: new Date(),        
                 Comment: "This is my second published message for 'Topic1'."        
             });
                   
-            jsTopics.Publish("topic2",{        
+            jsTopics.publish("topic2",{
                 Published: new Date(),        
                 Comment: "This is my first published message for 'Topic2'"       
             });
             
             // Cancel the subscription for subscription1      
-            jsTopics.Unsubscribe(subscription1);
+            jsTopics.unsubscribe(subscription1);
             
             // Since we have unsubscribed 'subscription1', this message will only go to
             // the console and not to the 'viewer' div.
-            jsTopics.Publish("topic1", {
+            jsTopics.publish("topic1", {
                 Published: new Date(),
                 Comment: "This should only appear in the console for 'Topic1'"
             });
@@ -75,7 +75,7 @@
             
             var newLine = document.createElement("br");
             viewer.appendChild(newLine);
-            var newMessage = document.createTextNode("Subscription invocations for 'subscription3': " + jsTopics.InvokedCount(subscription3));
+            var newMessage = document.createTextNode("Subscription invocations for 'subscription1': " + jsTopics.invokedCount(subscription1));
             viewer.appendChild(newMessage);
         }
     </script>

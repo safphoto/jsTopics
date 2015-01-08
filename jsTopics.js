@@ -13,7 +13,7 @@ SAF.JsTopics = {};
     /**
      * @return {boolean}
      */
-    bus.Publish = function (topic, data) {
+    bus.publish = function (topic, data) {
         if (!store[topic]) {
             return false;
         }
@@ -31,7 +31,7 @@ SAF.JsTopics = {};
     /**
      * @return {string}
      */
-    bus.Subscribe = function (topic, func) {     
+    bus.subscribe = function (topic, func) {
         if (!store[topic]) {    
             store[topic] = [];    
         }
@@ -49,7 +49,7 @@ SAF.JsTopics = {};
     };
 
     // Unsubscribe from a topic based on a tokenized reference to the subscription.
-    bus.Unsubscribe = function (token) {
+    bus.unsubscribe = function (token) {
         for (var topic in store) {
             if (store[topic]) {
                 var topicCount = store[topic].length;
@@ -68,7 +68,7 @@ SAF.JsTopics = {};
     /**
      * @return {Array.<string>}
      */
-    bus.TopicList = function () {
+    bus.topicList = function () {
         var topics = [];
         for (var topic in store) {
             topics.push(topic);
@@ -80,19 +80,19 @@ SAF.JsTopics = {};
     /**
      * @return {int}
      */
-    bus.TopicCount = function () {
-        var topics = bus.TopicList();
+    bus.topicCount = function () {
+        var topics = bus.topicList();
         return topics.length;
     };
     
-    bus.ClearSubscriptions = function () {
+    bus.clearSubscriptions = function () {
         topics = {};
     };
 
     /**
      * @return {int}
      */
-    bus.InvokedCount = function (token) {
+    bus.invokedCount = function (token) {
         var count = 0;
         
         for (var topic in store) {
