@@ -1,4 +1,5 @@
-// Safely create namespace
+'use strict';
+
 var SAF = SAF || {};
 
 SAF.JsTopics = {};
