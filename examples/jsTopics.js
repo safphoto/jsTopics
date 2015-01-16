@@ -12,7 +12,11 @@ SAF.JsTopics = {};
     var topicId = -1;
 
     /**
-     * @return {boolean}
+     * Send message to subscribers
+     *
+     * @param topic
+     * @param data
+     * @returns {*}
      */
     bus.publish = function (topic, data) {
         if (!store.hasOwnProperty(topic)) {
@@ -30,7 +34,11 @@ SAF.JsTopics = {};
     };
 
     /**
-     * @return {string}
+     * Ask to receive messages published to a specified topic
+     *
+     * @param topic
+     * @param func
+     * @returns {string}
      */
     bus.subscribe = function (topic, func) {
         if (!store.hasOwnProperty(topic)) {
@@ -49,7 +57,12 @@ SAF.JsTopics = {};
         return token;        
     };
 
-    // Unsubscribe from a topic based on a tokenized reference to the subscription.
+    /**
+     * Unsubscribe from a topic based on a tokenized reference to the subscription.
+     *
+     * @param token
+     * @returns {*}
+     */
     bus.unsubscribe = function (token) {
         for (var topic in store) {
             if (store.hasOwnProperty(topic)) {
@@ -67,7 +80,9 @@ SAF.JsTopics = {};
     };
 
     /**
-     * @return {Array.<string>}
+     * Returns a list of topics that have subscriptions
+     *
+     * @returns {Array}
      */
     bus.topicList = function () {
         var topics = [];
@@ -81,19 +96,26 @@ SAF.JsTopics = {};
     };
 
     /**
-     * @return {int}
+     * Returns the number of topics that have subscriptions
+     *
+     * @returns {Number}
      */
     bus.topicCount = function () {
         var topics = bus.topicList();
         return topics.length;
     };
-    
+
+    /**
+     * Removes all subscriptions
+     */
     bus.clearSubscriptions = function () {
         store = {};
     };
 
     /**
-     * @return {int}
+     * Returns the number of times a subscription was fulfilled
+     * @param token
+     * @returns {number}
      */
     bus.invokedCount = function (token) {
         var count = 0;
@@ -109,6 +131,5 @@ SAF.JsTopics = {};
         }
         
         return count;
-    }
-
+    };
 }(SAF.JsTopics));
