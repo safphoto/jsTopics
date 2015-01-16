@@ -1,10 +1,10 @@
-'use strict';
-
 var SAF = SAF || {};
 
 SAF.JsTopics = {};
 
 (function(bus) {
+    'use strict';
+
     // subscriptions store
     var store = {};
     
@@ -15,7 +15,7 @@ SAF.JsTopics = {};
      * @return {boolean}
      */
     bus.publish = function (topic, data) {
-        if (!store[topic]) {
+        if (!store.hasOwnProperty(topic)) {
             return false;
         }
 
@@ -33,7 +33,7 @@ SAF.JsTopics = {};
      * @return {string}
      */
     bus.subscribe = function (topic, func) {
-        if (!store[topic]) {    
+        if (!store.hasOwnProperty(topic)) {
             store[topic] = [];    
         }
 
@@ -52,7 +52,7 @@ SAF.JsTopics = {};
     // Unsubscribe from a topic based on a tokenized reference to the subscription.
     bus.unsubscribe = function (token) {
         for (var topic in store) {
-            if (store[topic]) {
+            if (store.hasOwnProperty(topic)) {
                 var topicCount = store[topic].length;
                 for (var index = 0; index < topicCount; index++) {
                     if (store[topic][index].token === token) {
@@ -72,7 +72,9 @@ SAF.JsTopics = {};
     bus.topicList = function () {
         var topics = [];
         for (var topic in store) {
-            topics.push(topic);
+            if (store.hasOwnProperty(topic)) {
+                topics.push(topic);
+            }
         }
         
         return topics;
@@ -87,7 +89,7 @@ SAF.JsTopics = {};
     };
     
     bus.clearSubscriptions = function () {
-        topics = {};
+        store = {};
     };
 
     /**
@@ -97,7 +99,7 @@ SAF.JsTopics = {};
         var count = 0;
         
         for (var topic in store) {
-            if (store[topic]) {
+            if (store.hasOwnProperty(topic)) {
                 for (var index = 0, topicCount = store[topic].length; index < topicCount; index++) {
                     if (store[topic][index].token === token) {
                         count = store[topic].invoked;
