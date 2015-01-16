@@ -1,6 +1,6 @@
 var SAF = SAF || {};
 
-SAF.SafTopics = {};
+SAF.Topics = {};
 
 (function(bus) {
     'use strict';
@@ -132,4 +132,4 @@ SAF.SafTopics = {};
         
         return count;
     };
-}(SAF.SafTopics));
+}(SAF.Topics));
